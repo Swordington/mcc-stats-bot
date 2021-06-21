@@ -1,10 +1,15 @@
-const updateAllVCs = require('../helpers/updateAllViewCounts')
+const updateAllCounts = require('../helpers/updateAllViewCounts')
+const updateAllChannels = require('../helpers/updateVoiceChannels')
 
 exports.run = async (client, message, args, level) => {
   if (client.livestreams.size === 0) return message.channel.send('❌ There are no active livestreams!')
-  setInterval(async () => {
-    await updateAllVCs(client, 'auto')
-  }, 5000)
+
+  const intervalFunc = async () => {
+    await updateAllCounts(client, 'auto')
+    await updateAllChannels(client)
+  }
+
+  client.intervalLoop = setInterval(intervalFunc, 5000)
 }
 
 exports.conf = {
