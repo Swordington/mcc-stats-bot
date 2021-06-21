@@ -2,6 +2,7 @@ const config = {
   devs: ['248540313059196928'], // Sword
   prefix: '=',
   devGuild: '700339616900972665',
+  logChannel: '856570336627916810',
   permLevels: [ // Permissions
     {
       level: 0, // Basic level command; return true automatically so all users can run.
