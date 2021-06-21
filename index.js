@@ -20,6 +20,7 @@ require('./helpers/functions')(client) // IDK why but it works
 
 client.commands = new Discord.Collection()
 client.aliases = new Discord.Collection()
+client.livestreams = new Discord.Collection()
 
 // The init script - prepares it all for starting
 const init = async () => {
