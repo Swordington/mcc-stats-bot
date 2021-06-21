@@ -1,6 +1,6 @@
 const config = {
   devs: ['248540313059196928'], // Sword
-  prefix: '.',
+  prefix: '=',
   devGuild: '700339616900972665',
   permLevels: [ // Permissions
     {

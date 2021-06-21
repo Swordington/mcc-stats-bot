@@ -15,7 +15,7 @@ module.exports = async (client, message) => {
   if (!message.content.startsWith(client.config.prefix)) return
 
   // Create arguments and command from message.
-  const args = message.content.slice(client.settings.prefix.length).trim().split(/ +/g)
+  const args = message.content.slice(client.config.prefix.length).trim().split(/ +/g)
   const command = args.shift().toLowerCase()
 
   // Fetches the user.
@@ -53,6 +53,6 @@ module.exports = async (client, message) => {
     message.flags.push(args.shift().slice(1))
   }
 
-  client.logger.cmd(`(${client.config.permLevels.find(l => l.level === level).level}) | ${message.author.username} [${message.author.id}] ran command ${cmd.help.name}`)
+  console.log(`(${client.config.permLevels.find(l => l.level === level).level}) | ${message.author.username} [${message.author.id}] ran command ${cmd.help.name}`)
   cmd.run(client, message, args, level)
 }

@@ -26,7 +26,7 @@ client.livestreams = new Discord.Collection()
 const init = async () => {
   // Searches for all commands & loads them
   const cmdFiles = await readdir('./commands/')
-  client.logger.load(`Loading a total of ${cmdFiles.length} commands.`)
+  console.log(`Loading a total of ${cmdFiles.length} commands.`)
   cmdFiles.forEach(f => {
     if (!f.endsWith('.js')) return
     const response = client.loadCommand(f)
@@ -34,10 +34,10 @@ const init = async () => {
   })
   // Searches for all events & loads them
   const evtFiles = await readdir('./events/')
-  client.logger.load(` Loading a total of ${evtFiles.length} events.`)
+  console.log(` Loading a total of ${evtFiles.length} events.`)
   evtFiles.forEach(file => {
     const eventName = file.split('.')[0]
-    client.logger.load(`Loading Event: ${eventName} (${file})`)
+    console.log(`Loading Event: ${eventName} (${file})`)
     const event = require(`./events/${file}`)
 
     client.on(eventName, event.bind(null, client))
@@ -51,7 +51,7 @@ const init = async () => {
   }
 
   // Logs into the Discord Gateway. THIS MUST A L W A Y S HAPPEN LAST.
-  client.login(client.settings.token)
+  client.login(process.env.TOKEN)
 }
 
 init()
