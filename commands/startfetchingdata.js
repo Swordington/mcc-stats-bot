@@ -1,5 +1,5 @@
 const updateAllCounts = require('../helpers/updateAllViewCounts')
-const updateAllChannels = require('../helpers/updateVoiceChannels')
+const updateAllChannels = require('../helpers/updateCountMessages')
 
 exports.run = async (client, message, args, level) => {
   if (client.livestreams.size === 0) return message.channel.send('❌ There are no active livestreams!')
