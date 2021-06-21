@@ -3,13 +3,14 @@ const axios = require('axios')
 
 /**
  * @param {Discord.Client} client
+ * @param {String} type
  */
-module.exports = async (client) => {
+module.exports = async (client, type) => {
   const livestreamsArray = Array.from(client.livestreams)
   const logChannel = await client.guilds.cache.get(client.config.devGuild).channels.cache.get(client.config.logChannel)
   const logEmbed = new Discord.MessageEmbed()
     .setTitle('Fetched Livestream Viewer Count')
-    .setFooter('MCC Stats Bot - updateAllViewCounts helper')
+    .setFooter('MCC Stats Bot - updateAllViewCounts helper | ' + type.toUpperCase())
     .setTimestamp()
 
   livestreamsArray.forEach(async livestreamer => {

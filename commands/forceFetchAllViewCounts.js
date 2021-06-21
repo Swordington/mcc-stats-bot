@@ -2,7 +2,7 @@ const updateAllVCs = require('../helpers/updateAllViewCounts')
 
 exports.run = async (client, message, args, level) => {
   if (client.livestreams.size === 0) return message.channel.send('❌ There are no active livestreams')
-  await updateAllVCs(client)
+  await updateAllVCs(client, 'force')
   message.react('👍')
 }
 
