@@ -1,11 +1,11 @@
-const creatorChannelArray = require('../streamersLinks.json').creators
+const creatorChannelArray = require('../streamersLinks.json').testChannel
 const axios = require('axios')
 
 module.exports = (client) => {
   creatorChannelArray.forEach(async creatorChannel => {
     let liveVideos
     try {
-      liveVideos = await axios.get(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId=${creatorChannel.id}-e8Q&eventType=live&maxResults=25&type=video&key=${process.env.GAPITOKEN}`)
+      liveVideos = await axios.get(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId=${creatorChannel.id}&eventType=live&maxResults=25&type=video&key=${process.env.GAPITOKEN}`)
     } catch (e) {
       console.log('I done did a goof \n' + e)
       return
@@ -15,7 +15,7 @@ module.exports = (client) => {
       console.log(`${creatorChannel.username} (${creatorChannel.id}) was not livestreaming`)
       return
     }
-
-    const viewoInfo = await axios.get(`https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=Ks-_Mh1QhMc&key=${process.env.GAPITOKEN}`)
+    client.livestreams.set(creatorChannel.id, { streaming: true, streamId: liveVideos.data.items[0].id.videoId })
+    console.log(`${creatorChannel.username} (${creatorChannel.id}) is livestreaming with an id of ${liveVideos.data.items[0].id.videoId}`)
   })
 }
