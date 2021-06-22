@@ -1,4 +1,5 @@
 const { MessageEmbed } = require('discord.js')
+const GuildModel = require('../models/guild')
 
 exports.run = async (client, message, args, level) => {
   const embed = new MessageEmbed()
@@ -7,8 +8,14 @@ exports.run = async (client, message, args, level) => {
     .setColor(message.guild.me.displayColor)
     .setTimestamp()
     .setFooter('MCC Stats Bot')
-  const statusMsg = await message.channel.send(embed)
+  const statusMsg = await message.channel.send('<a:Loading:846571474268586015> Gimme a sec')
 
+  const mongoGuild = await GuildModel.findById(message.guild.id)
+  mongoGuild.editChannelId = message.channel.id
+  mongoGuild.editMsgId = statusMsg.id
+  mongoGuild.save()
+
+  await statusMsg.edit(embed)
   client.uwuImAnTestVar = statusMsg.id
 }
 

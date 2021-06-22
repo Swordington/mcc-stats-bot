@@ -9,7 +9,7 @@ require('dotenv').config()
 const Discord = require('discord.js')
 const { promisify } = require('util')
 const readdir = promisify(require('fs').readdir)
-
+const mongoose = require('mongoose')
 const client = new Discord.Client()
 
 client.config = require('./config.js')
@@ -24,9 +24,19 @@ client.livestreams = new Discord.Collection()
 
 // The init script - prepares it all for starting
 const init = async () => {
+  // Connect to MongoDB
+  const uri = process.env.ATLAS_URI
+  mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }
+  )
+
+  client.mongooseConnection = mongoose.connection
+  client.mongooseConnection.once('open', async () => {
+    console.log(`==Connected to MongoDB==\n User: ${client.mongooseConnection.user}\n Port: ${client.mongooseConnection.port}\n Database: ${client.mongooseConnection.name}`)
+  })
+
   // Searches for all commands & loads them
   const cmdFiles = await readdir('./commands/')
-  console.log(`Loading a total of ${cmdFiles.length} commands.`)
+  console.log(`==Loading a total of ${cmdFiles.length} commands.==`)
   cmdFiles.forEach(f => {
     if (!f.endsWith('.js')) return
     const response = client.loadCommand(f)
@@ -34,7 +44,7 @@ const init = async () => {
   })
   // Searches for all events & loads them
   const evtFiles = await readdir('./events/')
-  console.log(` Loading a total of ${evtFiles.length} events.`)
+  console.log(`==Loading a total of ${evtFiles.length} events.==`)
   evtFiles.forEach(file => {
     const eventName = file.split('.')[0]
     console.log(`Loading Event: ${eventName} (${file})`)
