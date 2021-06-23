@@ -9,7 +9,7 @@ exports.run = async (client, message, args, level) => {
     .addField('Developer', sword.tag, true)
     .addField('Support', 'DM the developer', true)
     .setColor(message.guild.me.displayColor)
-    .setFooter(`${client.config.name} | ${client.config.description}`)
+    .setFooter('MCC Stats Bot')
   if (level >= 8) {
     embed
       .addField('User Cache', client.users.cache.size, true)
