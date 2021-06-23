@@ -9,7 +9,7 @@ exports.run = async (client, message, args, level) => {
     await updateAllChannels(client)
   }
 
-  client.intervalLoop = setInterval(intervalFunc, 5000)
+  client.intervalLoop = setInterval(intervalFunc, 60000)
 }
 
 exports.conf = {
