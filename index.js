@@ -25,14 +25,10 @@ client.livestreams = new Discord.Collection()
 // The init script - prepares it all for starting
 const init = async () => {
   // Connect to MongoDB
-  const uri = process.env.ATLAS_URI
-  mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }
+  mongoose.connect(process.env.ATLAS_URI, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }
   )
 
   client.mongooseConnection = mongoose.connection
-  client.mongooseConnection.once('open', async () => {
-    console.log(`==Connected to MongoDB==\n User: ${client.mongooseConnection.user}\n Port: ${client.mongooseConnection.port}\n Database: ${client.mongooseConnection.name}`)
-  })
 
   // Searches for all commands & loads them
   const cmdFiles = await readdir('./commands/')
@@ -51,6 +47,16 @@ const init = async () => {
     const event = require(`./events/${file}`)
 
     client.on(eventName, event.bind(null, client))
+  })
+
+  const mongooseEvtFiles = await readdir('./mongoEvents/')
+  console.log(`==Loading a total of ${mongooseEvtFiles.length} mongoose events.==`)
+  mongooseEvtFiles.forEach(file => {
+    const eventName = file.split('.')[0]
+    console.log(`Loading Mongoose Event: ${eventName} (${file})`)
+    const event = require(`./mongoEvents/${file}`)
+
+    client.mongooseConnection.on(eventName, event.bind(null, client))
   })
 
   // Builds the level Cache (the two levels used lol)
